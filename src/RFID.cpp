@@ -56,7 +56,7 @@ bool RFID::isMasterDefined() {
   return true;
 }
 
-void RFID::toggleDeleteAllRecords(int wipeB) {
+void RFID::toggleDeleteAllRecords(uint8_t wipeB) {
   //Wipe Code - If the Button (wipeB) Pressed while setup run (powered on) it wipes EEPROM
   if (digitalRead(wipeB) == LOW) {  // when button pressed pin should get low, button connected to ground
     Serial.println(F("Wipe Button Pressed"));
@@ -81,7 +81,7 @@ void RFID::toggleDeleteAllRecords(int wipeB) {
   }
 }
 
-void RFID::toggleDeleteMasterCard(int wipeB) {
+void RFID::toggleDeleteMasterCard(uint8_t wipeB) {
   // When device is in use if wipe button pressed for 10 seconds initialize Master Card wiping
   if (digitalRead(wipeB) == LOW) { // Check if button is pressed
     // Give some feedback
@@ -99,7 +99,7 @@ void RFID::toggleDeleteMasterCard(int wipeB) {
 }
 
 void RFID::getCardID(byte *_cardID) {
-  for(int i = 0; i < 4; i++) {
+  for(uint8_t i = 0; i < 4; i++) {
     _cardID[i] = cardID[i];
   }
 }
@@ -245,7 +245,7 @@ bool RFID::isMaster( byte test[] ) {
 	return checkTwo(test, masterCard);
 }
 
-bool RFID::monitorWipeButton(uint32_t interval, int wipeB) {
+bool RFID::monitorWipeButton(uint32_t interval, uint8_t wipeB) {
   uint32_t now = (uint32_t)millis();
   while ((uint32_t)millis() - now < interval)  {
     // check on every half a second

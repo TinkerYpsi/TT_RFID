@@ -26,9 +26,9 @@ public:
 	void printInitMessage();
 	void defineMasterCard();
 	bool isMasterDefined();
-	void toggleDeleteAllRecords(int wipeB);
+	void toggleDeleteAllRecords(uint8_t wipeB);
   void getCardID(byte *_cardID);
-	void toggleDeleteMasterCard(int wipeB);
+	void toggleDeleteMasterCard(uint8_t wipeB);
 	void deleteID(byte cardID[4]);
 	void writeID(byte cardID[4]);
   void maxRangeOn();
@@ -44,7 +44,7 @@ public:
 
 private:
 	void readID(uint8_t number);
-	bool monitorWipeButton(uint32_t interval, int wipeB);
+	bool monitorWipeButton(uint32_t interval, uint8_t wipeB);
   void writeIDTag(byte a[]);
 	void deleteIDTag(byte a[]);
 	bool checkTwo(byte a[], byte b[]);
