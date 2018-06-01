@@ -432,30 +432,4 @@ protected:
 	StatusCode MIFARE_TwoStepHelper(byte command, byte blockAddr, int32_t data);
 };
 
-
-// Not in original library:
-/* ------------------------------------------------ */
-void initializeRFID();
-void printInitMessage();
-void defineMasterCard();
-bool isMasterDefined();
-void toggleDeleteAllRecords(int wipeB);
-void toggleDeleteMasterCard(int wipeB);
-void deleteID(byte readCard[4]);
-void writeID(byte readCard[4]);
-/* ------------------------------------------------ */
-
-// In original AccessControl.ino
-/* ------------------------------------------------ */
-bool foundID();
-void ShowReaderDetails();
-void readID(uint8_t number);
-void writeIDTag(byte a[]);
-void deleteIDTag(byte a[]);
-bool checkTwo(byte a[], byte b[]);
-uint8_t findIDSLOT(byte find[]);
-bool findID(byte find[]);
-bool isMaster(byte test[]);
-bool monitorWipeButton(uint32_t interval);
-/* ------------------------------------------------ */
 #endif

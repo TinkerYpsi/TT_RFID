@@ -56,6 +56,7 @@
 #include <EEPROM.h>     // We are going to read and write PICC's UIDs from/to EEPROM
 #include <SPI.h>        // RC522 Module uses SPI protocol
 #include <MFRC522.h>  // Library for Mifare RC522 Devices
+#include <RFID.h>
 
 // Not in original library:
 /* ------------------------------------------------ */
@@ -124,6 +125,8 @@ void setup() {
 void loop () {
   do {
     successRead = foundID();  // sets successRead to true when we get read from reader otherwise false
+    readCard = getReadCard();
+
     toggleDeleteMasterCard(wipeB);
   }
   while (!successRead);   //the program will not go further while you are not getting a successful read
@@ -147,7 +150,7 @@ void loop () {
         Serial.println(F("Scan an RFID tag to ADD or REMOVE"));
       }
       else {                    // If scanned card is not known add it
-        Serial.println(F("I do not know this PICC, adding..."));
+        Serial.println(F("I do not know this ID, adding..."));
         writeID(readCard);
         Serial.println(F("Succesfully added ID"));
         Serial.println(F("-----------------------------"));
@@ -206,6 +209,7 @@ void printInitMessage() {
 void defineMasterCard() {
   Serial.println(F("No Master Card Defined"));
   Serial.println(F("Scan an ID to Define as Master Card"));
+  bool successRead = false;
   do {
     successRead = foundID();            // sets successRead to 1 when we get read from reader otherwise 0
   }
