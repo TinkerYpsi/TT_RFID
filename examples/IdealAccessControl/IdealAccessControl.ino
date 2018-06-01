@@ -57,9 +57,35 @@
 #include <SPI.h>        // RC522 Module uses SPI protocol
 #include <MFRC522.h>  // Library for Mifare RC522 Devices
 
+// Not in original library:
+/* ------------------------------------------------ */
+void initializeRFID();
+void printInitMessage();
+void defineMasterCard();
+bool isMasterDefined();
+void toggleDeleteAllRecords(int wipeB);
+void toggleDeleteMasterCard(int wipeB);
+void deleteID(byte readCard[4]);
+void writeID(byte readCard[4]);
+/* ------------------------------------------------ */
+
+// In original AccessControl.ino
+/* ------------------------------------------------ */
+bool foundID();
+void ShowReaderDetails();
+void readID(uint8_t number);
+void writeIDTag(byte a[]);
+void deleteIDTag(byte a[]);
+bool checkTwo(byte a[], byte b[]);
+uint8_t findIDSLOT(byte find[]);
+bool findID(byte find[]);
+bool isMaster(byte test[]);
+bool monitorWipeButton(uint32_t interval);
+/* ------------------------------------------------ */
+
 constexpr uint8_t wipeB = 3;     // Button pin for WipeMode
 bool programMode = false;  // initialize programming mode to false
-uint8_t successRead;    // Variable integer to keep if we have Successful Read from Reader
+bool successRead;    // Variable integer to keep if we have Successful Read from Reader
 
 byte storedCard[4];   // Stores an ID read from EEPROM
 byte readCard[4];   // Stores scanned ID read from RFID Module
@@ -97,10 +123,10 @@ void setup() {
 ///////////////////////////////////////// Main Loop ///////////////////////////////////
 void loop () {
   do {
-    idFound = foundID();  // sets successRead to true when we get read from reader otherwise false
+    successRead = foundID();  // sets successRead to true when we get read from reader otherwise false
     toggleDeleteMasterCard(wipeB);
   }
-  while (!idFound);   //the program will not go further while you are not getting a successful read
+  while (!successRead);   //the program will not go further while you are not getting a successful read
 
   // mode for adding and deleting RFID tags
   if (programMode) {
@@ -111,8 +137,6 @@ void loop () {
       Serial.println(F("-----------------------------"));
       programMode = false;
       return;
-    }fdfdsa
-      }
     }
   }
 
@@ -167,7 +191,7 @@ void defineMasterCard() {
   Serial.println(F("No Master Card Defined"));
   Serial.println(F("Scan an ID to Define as Master Card"));
   do {
-    successRead = getID();            // sets successRead to 1 when we get read from reader otherwise 0
+    successRead = foundID();            // sets successRead to 1 when we get read from reader otherwise 0
   }
   while (!successRead);                  // Program will not go further while you not get a successful read
   for ( uint8_t j = 0; j < 4; j++ ) {        // Loop 4 times
@@ -185,8 +209,6 @@ bool isMasterDefined() {
   if (EEPROM.read(1) != 143) return false;
   return true;
 }
-
-void
 
 void toggleDeleteAllRecords(int wipeB) {
   //Wipe Code - If the Button (wipeB) Pressed while setup run (powered on) it wipes EEPROM
@@ -241,7 +263,7 @@ void writeID(byte readCard[4]) {
 }
 
 ///////////////////////////////////////// Get PICC's UID ///////////////////////////////////
-uint8_t foundID() {
+bool foundID() {
   // Getting ready for Reading PICCs
   if ( ! mfrc522.PICC_IsNewCardPresent()) { //If a new PICC placed to RFID reader continue
     return false;
