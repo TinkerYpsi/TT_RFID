@@ -38,17 +38,17 @@ public:
 	/* ------------------------------------------------ */
 	bool foundID();
 	void showReaderDetails();
-	void readID(uint8_t number);
-	bool checkTwo(byte a[], byte b[]);
-	uint8_t findIDSLOT(byte find[]);
 	bool findID(byte find[]);
 	bool isMaster(byte test[]);
-	bool monitorWipeButton(uint32_t interval, int wipeB);
 	/* ------------------------------------------------ */
 
 private:
+	void readID(uint8_t number);
+	bool monitorWipeButton(uint32_t interval, int wipeB);
   void writeIDTag(byte a[]);
 	void deleteIDTag(byte a[]);
+	bool checkTwo(byte a[], byte b[]);
+	uint8_t findIDSLOT(byte find[]);
 	byte storedCard[4];   // Stores an ID read from EEPROM
 	byte cardID[4];   // Stores scanned ID read from RFID Module
 	byte masterCard[4];   // Stores master card's ID read from EEPROM

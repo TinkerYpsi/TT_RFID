@@ -19,6 +19,11 @@ Uid		KEYWORD1
 CardInfo	KEYWORD1
 MIFARE_Key	KEYWORD1
 PcbBlock	KEYWORD1
+RFID		KEYWORD1
+
+
+
+
  
 #######################################
 # KEYWORD2 Methods and functions
@@ -98,6 +103,22 @@ MIFARE_UnbrickUidSector	KEYWORD2
 # Convenience functions - does not add extra functionality
 PICC_IsNewCardPresent	KEYWORD2
 PICC_ReadCardSerial	KEYWORD2
+
+# Functions for access control 
+initialize				KEYWORD2
+printInitMessage		KEYWORD2
+defineMasterCard		KEYWORD2
+isMasterDefined			KEYWORD2
+toggleDeleteAllRecords	KEYWORD2
+getCardID				KEYWORD2
+toggleDeleteMasterCard	KEYWORD2
+deleteID				KEYWORD2
+writeID					KEYWORD2
+maxRangeOn				KEYWORD2
+foundID					KEYWORD2
+showReaderDetails		KEYWORD2
+findID					KEYWORD2
+isMaster 				KEYWORD2
 
 #######################################
 # KEYWORD3 setup and loop functions, as well as the Serial keywords
