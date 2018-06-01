@@ -10,7 +10,7 @@
 #include <SPI.h>
 #include <EEPROM.h>
 #include <MFRC522.h>
-
+//fdsaf
 constexpr uint8_t RST_PIN = 9;
 constexpr uint8_t SS_PIN = 10;
 #define MASTER_CARD_SET 143
