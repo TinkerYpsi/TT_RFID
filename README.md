@@ -26,7 +26,7 @@ void maxRangeOn();		// turns on max range detection for RFID module
 ```
 
 ## Dependencies
-#### **Note:** The non-native libraries below (MFRC522 and EEPROM) have been copied into the *AllLibraries* branch for your convenience
+### **Note:** The non-native libraries below (MFRC522 and EEPROM) have been copied into the *AllLibraries* branch for your convenience
 * **MFRC522.h**
     * From: [Github Repo][MFRC522-github]
     * License: Unlicense
