@@ -22,24 +22,26 @@ public:
 
 	// Not in original AccessControl.ino:
 	/* ------------------------------------------------ */
-	void initialize();
-	void printInitMessage();
-	void defineMasterCard();
-	bool isMasterDefined();
+	void initialize();				// initialize SPI and RFID module hardware
+	void printInitMessage();	// print to Serial that RFID is initialized
+	void defineMasterCard();	// defines master ID through RFID scanning
+	bool isMasterDefined();		// returns whether or not master ID has been defined
+	// if wipeB is pressed for 10 seconds, all records are wiped
 	void toggleDeleteAllRecords(uint8_t wipeB);
-  void getCardID(byte *_cardID);
+  void getCardID(byte *_cardID);		// sets _cardID to be the last read ID
+	// if wipeB is pressed for 10 seconds, master ID is wiped
 	void toggleDeleteMasterCard(uint8_t wipeB);
-	void deleteID(byte cardID[4]);
-	void writeID(byte cardID[4]);
-  void maxRangeOn();
+	void deleteID(byte cardID[4]);	// removes ID from list of passable IDs
+	void writeID(byte cardID[4]);		// adds ID to list of passable IDs
+  void maxRangeOn();		// turns on max range detection for RFID module
 	/* ------------------------------------------------ */
 
 	// In original AccessControl.ino
 	/* ------------------------------------------------ */
-	bool foundID();
-	void showReaderDetails();
-	bool findID(byte find[]);
-	bool isMaster(byte test[]);
+	bool foundID();			// returns true if any ID is read and false otherwise
+	void showReaderDetails();	// prints RFID module data to Serial
+	bool findID(byte find[]);	// finds specific ID
+	bool isMaster(byte test[]);		// returns whether ID is master key or not
 	/* ------------------------------------------------ */
 
 private:
