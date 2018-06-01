@@ -30,8 +30,7 @@ void setup() {
 
 void loop() {
   successRead = rfid.foundID();
-  // rfid.getCardID(cardID);
-
+  rfid.getCardID(cardID);
   rfid.toggleDeleteMasterCard(wipeB);
   if(!successRead)
   {
