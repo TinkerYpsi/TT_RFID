@@ -138,6 +138,22 @@ void loop () {
       programMode = false;
       return;
     }
+    else {
+      if ( findID(readCard) ) { // If scanned card is known delete it
+        Serial.println(F("I know this ID, removing..."));
+        deleteID(readCard);
+        Serial.println(F("Succesfully removed ID"));
+        Serial.println("-----------------------------");
+        Serial.println(F("Scan an RFID tag to ADD or REMOVE"));
+      }
+      else {                    // If scanned card is not known add it
+        Serial.println(F("I do not know this PICC, adding..."));
+        writeID(readCard);
+        Serial.println(F("Succesfully added ID"));
+        Serial.println(F("-----------------------------"));
+        Serial.println(F("Scan an RFID tag to ADD or REMOVE"));
+      }
+    }
   }
 
   // mode for checking IDs to see if they match existing records
@@ -145,13 +161,13 @@ void loop () {
     if ( isMaster(readCard)) {    // If scanned card's ID matches Master Card's ID - enter program mode
       programMode = true;
       Serial.println(F("Hello Master - Entered Program Mode"));
-      Serial.println("");
-      Serial.println(F("Scan an ID to ADD or REMOVE to records"));
+      Serial.println();
+      Serial.println(F("Scan an RFID tag to ADD or REMOVE"));
       Serial.println(F("Scan Master Card again to Exit Program Mode"));
       Serial.println(F("-----------------------------"));
     }
     else {
-      if ( findID(readCard) ) { // If not, see if the card is in the EEPROM
+      if ( findID(readCard) ) { // If not, see if the card is in the records
         Serial.println(F("Welcome, You shall pass"));
       }
       else {      // If not, show that the ID was not valid
