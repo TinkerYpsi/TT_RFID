@@ -1,5 +1,5 @@
-#ifndef RFID_h
-#define RFID_h
+#ifndef TT_RFID_h
+#define TT_RFID_h
 
 #include "require_cpp11.h"
 #include "deprecated.h"
@@ -15,10 +15,10 @@ constexpr uint8_t RST_PIN = 9;
 constexpr uint8_t SS_PIN = 10;
 #define MASTER_CARD_SET 143
 
-class RFID {
+class TT_RFID {
 public:
-	RFID();  // default RST and SS pins are 9 and 10
-  RFID(uint8_t _RST_PIN, uint8_t _SS_PIN);
+	TT_RFID();  // default RST and SS pins are 9 and 10
+  TT_RFID(uint8_t _RST_PIN, uint8_t _SS_PIN);
 
 	// Not in original AccessControl.ino:
 	/* ------------------------------------------------ */

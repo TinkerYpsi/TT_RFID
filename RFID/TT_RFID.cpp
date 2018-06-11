@@ -1,25 +1,25 @@
 #include <Arduino.h>
-#include <RFID.h>
+#include <TT_RFID.h>
 
-RFID::RFID() : mfrc522(MFRC522(SS_PIN, RST_PIN)) { }
+TT_RFID::TT_RFID() : mfrc522(MFRC522(SS_PIN, RST_PIN)) { }
 
-void RFID::initialize() {
+void TT_RFID::initialize() {
   SPI.begin();           // MFRC522 Hardware uses SPI protocol
   mfrc522.PCD_Init();    // Initialize MFRC522 Hardware
 }
 
-RFID::RFID(uint8_t _RST_PIN, uint8_t _SS_PIN)
+TT_RFID::TT_RFID(uint8_t _RST_PIN, uint8_t _SS_PIN)
   : mfrc522(MFRC522(_SS_PIN, _RST_PIN))
   {
     SPI.begin();           // MFRC522 Hardware uses SPI protocol
     mfrc522.PCD_Init();    // Initialize MFRC522 Hardware
   }
 
-void RFID::maxRangeOn() {
+void TT_RFID::maxRangeOn() {
   mfrc522.PCD_SetAntennaGain(mfrc522.RxGain_max);
 }
 
-void RFID::printInitMessage() {
+void TT_RFID::printInitMessage() {
   Serial.println(F("-------------------"));
   Serial.println(F("Master Card's ID"));
   for ( uint8_t i = 0; i < 4; i++ ) {          // Read Master Card's UID from EEPROM
@@ -32,7 +32,7 @@ void RFID::printInitMessage() {
   Serial.println(F("Waiting for IDs to be scanned"));
 }
 
-void RFID::defineMasterCard() {
+void TT_RFID::defineMasterCard() {
   Serial.println(F("No Master Card Defined"));
   Serial.println(F("Scan an ID to Define as Master Card"));
   bool successRead = false;
@@ -47,7 +47,7 @@ void RFID::defineMasterCard() {
   Serial.println(F("Master Card Defined"));
 }
 
-bool RFID::isMasterDefined() {
+bool TT_RFID::isMasterDefined() {
   // Check if master card defined, if not let user choose a master card
   // This also useful to just redefine the Master Card
   // You can keep other EEPROM records just write other than 143 to EEPROM address 1
@@ -56,7 +56,7 @@ bool RFID::isMasterDefined() {
   return true;
 }
 
-void RFID::toggleDeleteAllRecords(uint8_t wipeB) {
+void TT_RFID::toggleDeleteAllRecords(uint8_t wipeB) {
   //Wipe Code - If the Button (wipeB) Pressed while setup run (powered on) it wipes EEPROM
   if (digitalRead(wipeB) == LOW) {  // when button pressed pin should get low, button connected to ground
     Serial.println(F("Wipe Button Pressed"));
@@ -81,7 +81,7 @@ void RFID::toggleDeleteAllRecords(uint8_t wipeB) {
   }
 }
 
-void RFID::toggleDeleteMasterCard(uint8_t wipeB) {
+void TT_RFID::toggleDeleteMasterCard(uint8_t wipeB) {
   // When device is in use if wipe button pressed for 10 seconds initialize Master Card wiping
   if (digitalRead(wipeB) == LOW) { // Check if button is pressed
     // Give some feedback
@@ -98,24 +98,24 @@ void RFID::toggleDeleteMasterCard(uint8_t wipeB) {
   }
 }
 
-void RFID::getCardID(byte *_cardID) {
+void TT_RFID::getCardID(byte *_cardID) {
   for(uint8_t i = 0; i < 4; i++) {
     _cardID[i] = cardID[i];
   }
 }
 
-void RFID::deleteID(byte cardID[4]) {
+void TT_RFID::deleteID(byte cardID[4]) {
   deleteIDTag(cardID);
   deleteIDTag(cardID);
 }
 
-void RFID::writeID(byte cardID[4]) {
+void TT_RFID::writeID(byte cardID[4]) {
   writeIDTag(cardID);
   writeIDTag(cardID);
 }
 
 ///////////////////////////////////////// Get PICC's UID ///////////////////////////////////
-bool RFID::foundID() {
+bool TT_RFID::foundID() {
   // Getting ready for Reading PICCs
   if ( ! mfrc522.PICC_IsNewCardPresent()) { //If a new PICC placed to RFID reader continue
     return false;
@@ -136,7 +136,7 @@ bool RFID::foundID() {
   return true;
 }
 
-void RFID::showReaderDetails() {
+void TT_RFID::showReaderDetails() {
   // Get the MFRC522 software version
   byte v = mfrc522.PCD_ReadRegister(mfrc522.VersionReg);
   Serial.print(F("MFRC522 Software Version: 0x"));
@@ -157,7 +157,7 @@ void RFID::showReaderDetails() {
 }
 
 //////////////////////////////////////// Read an ID from EEPROM //////////////////////////////
-void RFID::readID( uint8_t number ) {
+void TT_RFID::readID( uint8_t number ) {
   uint8_t start = (number * 4 ) + 2;    // Figure out starting position
   for ( uint8_t i = 0; i < 4; i++ ) {     // Loop 4 times to get the 4 Bytes
     storedCard[i] = EEPROM.read(start + i);   // Assign values read from EEPROM to array
@@ -165,7 +165,7 @@ void RFID::readID( uint8_t number ) {
 }
 
 ///////////////////////////////////////// Add ID to EEPROM   ///////////////////////////////////
-void RFID::writeIDTag( byte a[] ) {
+void TT_RFID::writeIDTag( byte a[] ) {
   if ( !findID( a ) ) {     // Before we write to the EEPROM, check to see if we have seen this card before!
     uint8_t num = EEPROM.read(0);     // Get the numer of used spaces, position 0 stores the number of ID cards
     uint8_t start = ( num * 4 ) + 6;  // Figure out where the next slot starts
@@ -178,7 +178,7 @@ void RFID::writeIDTag( byte a[] ) {
 }
 
 ///////////////////////////////////////// Remove ID from EEPROM   ///////////////////////////////////
-void RFID::deleteIDTag( byte a[] ) {
+void TT_RFID::deleteIDTag( byte a[] ) {
   if ( !findID( a ) ) {     // Before we delete from the EEPROM, check to see if we have this card!
     // if not, don't do anything (to remove duplicate function call double delete error)
   }
@@ -204,7 +204,7 @@ void RFID::deleteIDTag( byte a[] ) {
 }
 
 ///////////////////////////////////////// Check Bytes   ///////////////////////////////////
-bool RFID::checkTwo ( byte a[], byte b[] ) {
+bool TT_RFID::checkTwo ( byte a[], byte b[] ) {
   for ( uint8_t k = 0; k < 4; k++ ) {   // Loop 4 times
     if ( a[k] != b[k] ) {     // IF a != b then false, because: one fails, all fail
        return false;
@@ -214,7 +214,7 @@ bool RFID::checkTwo ( byte a[], byte b[] ) {
 }
 
 ///////////////////////////////////////// Find Slot   ///////////////////////////////////
-uint8_t RFID::findIDSLOT( byte find[] ) {
+uint8_t TT_RFID::findIDSLOT( byte find[] ) {
   uint8_t count = EEPROM.read(0);       // Read the first Byte of EEPROM that
   for ( uint8_t i = 1; i <= count; i++ ) {    // Loop once for each EEPROM entry
     readID(i);                // Read an ID from EEPROM, it is stored in storedCard[4]
@@ -226,7 +226,7 @@ uint8_t RFID::findIDSLOT( byte find[] ) {
 }
 
 ///////////////////////////////////////// Find ID From EEPROM   ///////////////////////////////////
-bool RFID::findID( byte find[] ) {
+bool TT_RFID::findID( byte find[] ) {
   uint8_t count = EEPROM.read(0);     // Read the first Byte of EEPROM that
   for ( uint8_t i = 1; i < count; i++ ) {    // Loop once for each EEPROM entry
     readID(i);          // Read an ID from EEPROM, it is stored in storedCard[4]
@@ -241,11 +241,11 @@ bool RFID::findID( byte find[] ) {
 
 ////////////////////// Check cardID IF is masterCard   ///////////////////////////////////
 // Check to see if the ID passed is the master programing card
-bool RFID::isMaster( byte test[] ) {
+bool TT_RFID::isMaster( byte test[] ) {
 	return checkTwo(test, masterCard);
 }
 
-bool RFID::monitorWipeButton(uint32_t interval, uint8_t wipeB) {
+bool TT_RFID::monitorWipeButton(uint32_t interval, uint8_t wipeB) {
   uint32_t now = (uint32_t)millis();
   while ((uint32_t)millis() - now < interval)  {
     // check on every half a second
