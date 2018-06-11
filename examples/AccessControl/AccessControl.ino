@@ -1,4 +1,4 @@
-#include <RFID.h>
+#include <TT_RFID.h>
 #include <EEPROM.h>     // We are going to read and write PICC's UIDs from/to EEPROM
 #include <SPI.h>        // RC522 Module uses SPI protocol
 #include <MFRC522.h>  // Library for Mifare RC522 Devices
@@ -8,7 +8,7 @@ constexpr uint8_t wipeB = 3;     // Button pin for WipeMode
 bool programMode = false;  // initialize programming mode to false
 bool successRead;    // Variable integer to keep if we have Successful Read from Reader
 byte cardID[4];   // Stores scanned ID read from RFID Module
-RFID rfid;
+TT_RFID rfid;
 
 void setup() {
   //Arduino Pin Configuration
