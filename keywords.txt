@@ -19,12 +19,12 @@ Uid		KEYWORD1
 CardInfo	KEYWORD1
 MIFARE_Key	KEYWORD1
 PcbBlock	KEYWORD1
-RFID		KEYWORD1
+TT_RFID		KEYWORD1
 
 
 
 
- 
+
 #######################################
 # KEYWORD2 Methods and functions
 #######################################
@@ -104,7 +104,7 @@ MIFARE_UnbrickUidSector	KEYWORD2
 PICC_IsNewCardPresent	KEYWORD2
 PICC_ReadCardSerial	KEYWORD2
 
-# Functions for access control 
+# Functions for access control
 initialize				KEYWORD2
 printInitMessage		KEYWORD2
 defineMasterCard		KEYWORD2
